@@ -10,7 +10,7 @@
 name=Format consistency
 qgisMinimumVersion=3.0
 description=Check econding, number of features and coordinate system in layer(s)
-version=0.1
+version=0.2
 author=Alex Santos
 email=alxcart@gmail.com
 
@@ -30,7 +30,7 @@ tags=spatial data quality, check, format, econding, src
 
 homepage=https://github.com/alxcart/FormatConsistency/wiki
 category=Vector
-icon=icon.ico
+icon=icon.png
 # experimental flag
 experimental=False
 
