@@ -31,6 +31,7 @@ from qgis.core import QgsCoordinateReferenceSystem as Hoh
 from .resources import *
 # Import the code for the dialog
 from .FormatConsistency_dialog import FormatConsistencyDialog
+from .main_format_consistency import *
 
 class FormatConsistency:
     """QGIS Plugin Implementation."""
@@ -161,12 +162,12 @@ class FormatConsistency:
     #     output_dir = QFileDialog.getExistingDirectory(self.dlg1, "Select folder", "")
     #     #self.dlg1.lineEdit.setText(output_dir)
 
-    # def run(self):
+    def run(self):
     #     """Run method that performs all the real work"""
     #     # show the dialog
-    #     self.dlg.show()
+        self.dlg.show()
     #
-    #     self.dlg.pushButton.clicked.connect(self.check)
+        self.dlg.pushButton.clicked.connect(self.check)
 
     def check(self):
         ### Begin to simulate in the python terminal
@@ -184,73 +185,18 @@ class FormatConsistency:
         
         # Create layer list
         layers = QgsProject.instance().mapLayers().values()
+        info_camadas = list_layers(layers)
 
-        class LayerInfo:
-            name = ""
-            crs = ""
-            econding = ""
-            count_ = ""
-            formato = ""
-            is_Valid = ""
+        #class LayerInfo:
+        #    name = ""
+        #    crs = ""
+        #    econding = ""
+        #    count_ = ""
+        #    formato = ""
+        #    is_Valid = ""
 
         # Generate data table
-        self.dlg1.tableWidget.clear()
-        self.dlg1.tableWidget.setRowCount(len(layers))
-        self.dlg1.tableWidget.setColumnCount(6)
-        self.dlg1.tableWidget.setColumnWidth(0, 200)
-        self.dlg1.tableWidget.horizontalHeader().setStretchLastSection(True)
-
-        self.dlg1.tableWidget.setHorizontalHeaderItem(0, QTableWidgetItem("Layer"))
-        self.dlg1.tableWidget.setHorizontalHeaderItem(1, QTableWidgetItem("SRC"))
-        self.dlg1.tableWidget.setHorizontalHeaderItem(2, QTableWidgetItem("Econding"))
-        self.dlg1.tableWidget.setHorizontalHeaderItem(3, QTableWidgetItem("Count"))
-        self.dlg1.tableWidget.setHorizontalHeaderItem(4, QTableWidgetItem("Format"))
-        self.dlg1.tableWidget.setHorizontalHeaderItem(5, QTableWidgetItem("isValid"))
-
-        # Iterate over all loaded layers
-        layer_list = []
-        layer_count = 0
-
-        for layer in layers:
-            layer_count += 1
-
-            layer_list.append(LayerInfo)
-            layer_list[layer_count - 1].name = layer.name()
-            layer_list[layer_count - 1].crs = layer.crs().description()
-            try:
-                layer_list[layer_count - 1].econding = layer.dataProvider().encoding()
-                layer_list[layer_count - 1].count_ = layer.featureCount()
-                layer_list[layer_count - 1].formato = layer.storageType()
-            except AttributeError:
-                pass
-            
-            layer_list[layer_count - 1].is_Valid = layer.isValid()
-            
-            self.dlg1.tableWidget.setItem(layer_count - 1, 0, QTableWidgetItem(layer.name()))
-            self.dlg1.tableWidget.setItem(layer_count - 1, 1, QTableWidgetItem(layer.crs().description()))
-            try: 
-                self.dlg1.tableWidget.setItem(layer_count - 1, 2, QTableWidgetItem(layer.dataProvider().encoding()))
-                self.dlg1.tableWidget.setItem(layer_count - 1, 3, QTableWidgetItem(str(layer.featureCount())))
-                self.dlg1.tableWidget.setItem(layer_count - 1, 4, QTableWidgetItem(layer.storageType()))
-            except AttributeError:
-                pass
-            
-            self.dlg1.tableWidget.setItem(layer_count - 1, 5, QTableWidgetItem(str(layer.isValid())))
-
-        self.dlg1.tableWidget.move(0, 0)
-
-        def save_to_file():
-            dialog = QFileDialog()
-            name = dialog.getSaveFileName(None, "Export result to CSV", "", "CSV file (*.csv)")
-            if name[0] == "":
-                return None
-        
-            save_file = open(name[0], 'w')
-        
-            for i in layer_list:
-                save_file.write("%s,%s\n" % (i.name, i.crs))
-        
-            save_file.close()
-
+        mostrar_tabela(self, layers)
+       
         self.dlg1.show()
         #self.dlg1.pushButton.clicked.connect(save_to_file)    
