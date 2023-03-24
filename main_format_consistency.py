@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QTableWidgetItem, QAction, QFileDialog, QApplication
 from qgis.core import QgsProject, QgsVectorFileWriter,QgsCoordinateReferenceSystem, QgsVectorLayer
 
 from datetime import datetime
-from .FormatConsistency_dialog import FormatConsistencyDialog
+# from .FormatConsistency_dialog import FormatConsistencyDialog
 # from .FormatConsistency import FormatConsistency
 
 # classe_camadas():
